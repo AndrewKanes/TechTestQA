@@ -110,6 +110,9 @@ public class TechTestQA {
         System.out.println(String.format("    \"letters\": {\"wins\": " + lettersWins + " \"streak\": " + letterStreakMax + ","));
         System.out.println(String.format("    \"numbers\": {\"wins\": " + numberWins + " \"streak\": " + numberStreakMax));
         System.out.println(String.format("}"));
+
+        // Not quite according to plan
+        // Complications arose, ensued and were overcome.
     }
 
     private static ArrayList createArrayOfNumbers(int primeOdds) {

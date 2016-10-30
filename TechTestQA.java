@@ -1,36 +1,45 @@
+import javax.xml.stream.events.Characters;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 public class TechTestQA {
-    private final static int MAX_NUMBER = 99;
-    private final static ArrayList<Integer> PRIME_NUMBERS = findPrimes(MAX_NUMBER);
-    private final static ArrayList<Integer> PERFECT_SQUARES = findPerfectSquares(MAX_NUMBER);
+    private final static int MAX_NUMBER = 99;       // Each pair should be one number (1-99)
+    private final static ArrayList<Integer> PRIME_NUMBERS = findPrimes(); // Prime numbers should be Y times more likely than other numbers
+    private final static ArrayList<Integer> PERFECT_SQUARES = findPerfectSquares(); // Perfects squares should be one third (1/3)x as likely as prime numbers
+    private final static ArrayList<Character> VOWELS = vowels(); // Vowels (a, e, i, o, u) should be Z times more likely than consonants
 
     public static void main(String[] args) {
+        // Prompts for user to enter parameters
         Scanner scanner = new Scanner(System.in);
-        System.out.print("What is the number of challeges? ");
+        System.out.print("What is the number of challeges? "); // he number of "challenges" (X)
         Integer challenges = Integer.valueOf(scanner.next());
 
-        System.out.print("What is the likelihood of primes? ");
+        System.out.print("What is the likelihood of primes? "); // he likelihood of prime numbers (Y)
         Integer primeOdds = Integer.valueOf(scanner.next());
 
-        System.out.println("What is the likelihood of vowels? ");
-        //Integer vowelsOdds = Integer.valueOf(scanner.next());
+        System.out.print("What is the likelihood of vowels? "); // The likelihood of vowels (Z)
+        Integer vowelsOdds = Integer.valueOf(scanner.next());
 
+        // Create ArrayLists from which to select character pairs
         final ArrayList<Integer> WEIGHTED_NUMBER_ARRAY = createArrayOfNumbers(primeOdds);
+        final ArrayList<Character>  WEIGHTED_CHARACTER_ARRAY =  createArrayOfLetters(vowelsOdds);
+
+        // Array to hold results of picks
         Integer[][] randomPairs = new Integer[2][challenges];
 
-        //System.out.println("WEIGHTED_NUMBER_ARRAY.size: " + WEIGHTED_NUMBER_ARRAY.size());
-
+        // Loop through "challenges" (X) - choosing from weighted ArrayLists
         for (int i = 0; i < challenges; i++) {
             Random rand = new Random();
-            int random = rand.nextInt(WEIGHTED_NUMBER_ARRAY.size()-1);
+            
+            int random = rand.nextInt(WEIGHTED_NUMBER_ARRAY.size() - 1);
             Integer randomNumber = WEIGHTED_NUMBER_ARRAY.get(random);
 
             int randomChar = rand.nextInt(26) + 'a';
+            char randomletter = (char) rand.nextInt(WEIGHTED_CHARACTER_ARRAY.size() - 1);
+
             randomPairs[0][i] = randomNumber;
-            randomPairs[1][i] = Integer.valueOf(randomChar) - 96;
+            randomPairs[1][i] =  Integer.valueOf(randomletter);
         }
 
         int lettersWins = 0;
@@ -85,18 +94,36 @@ public class TechTestQA {
         return numbersWithOdds;
     }
 
+    private static ArrayList createArrayOfLetters(int vowelOdds) {
+        ArrayList<Character> letterWithOdds = new ArrayList();
+
+        for (Character letter = 'a'; letter <= 'z'; letter++) {
+            letterWithOdds.add(letter);
+            if (VOWELS.contains(letter)) {
+                for (int x = 0; x < vowelOdds ; x++) {
+                    letterWithOdds.add(letter);
+                }
+            }
+            if (letter=='y') {
+                letterWithOdds.add(letter);
+                letterWithOdds.add(letter);
+            }
+
+        }
+        return letterWithOdds;
+    }
+
     /**
      * Finds perfect squares less than maxNumber
      *
-     * @param maxNumber the upper limit for perfect square search
      * @return ArrayList of perfect squares
      */
-    private static ArrayList<Integer> findPerfectSquares(int maxNumber) {
+    private static ArrayList<Integer> findPerfectSquares() {
         ArrayList<Integer> perfectSquares = new ArrayList();
         System.out.print("Perfect Squares: ");
         for (int i = 1; i * i <= MAX_NUMBER; i++) {
             perfectSquares.add(i * i);
-            System.out.print(i*i + " ");
+            System.out.print(i * i + " ");
         }
         System.out.println();
         return perfectSquares;
@@ -109,14 +136,13 @@ public class TechTestQA {
      * reference:
      * http://beginnersbook.com/2014/01/java-program-to-display-prime-numbers/
      *
-     * @param maxNumber the upper limit for prime number search
      * @return ArrayList of prime numbers
      */
-    private static ArrayList<Integer> findPrimes(int maxNumber) {
+    private static ArrayList<Integer> findPrimes() {
         ArrayList<Integer> primeNumbers = new ArrayList();
         System.out.print("Prime Numbers: ");
         int num = 0;
-        for (int i = 1; i <= maxNumber; i++) {
+        for (int i = 1; i <= MAX_NUMBER; i++) {
             int counter = 0;
             for (num = i; num >= 1; num--) {
                 if (i % num == 0) {
@@ -131,5 +157,15 @@ public class TechTestQA {
         }
         System.out.println();
         return primeNumbers;
+    }
+
+    private static ArrayList vowels( ) {
+        ArrayList<Character> vowels = new ArrayList<>();
+        vowels.add('a');
+        vowels.add('e');
+        vowels.add('i');
+        vowels.add('o');
+        vowels.add('u');
+        return vowels;
     }
 }

@@ -5,6 +5,7 @@
  * Q: Is there a word in the English language that uses all the vowels including "y" ?
  * A: Unquestionablely!
  */
+
 public enum Vowels {
     A, E, I, O, U;
 

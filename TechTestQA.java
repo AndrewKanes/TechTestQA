@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * Generates X random character pairs
  * and analyzes them using the following rules:
- *
+ * <p>
  * 1. Each pair should be one number (1-99) and one letter (a-z)
  * 2. Prime numbers should be Y times more likely than other numbers
  * 3. Perfects squares should be one third (1/3)x as likely as prime numbers
@@ -68,7 +68,6 @@ public class TechTestQA {
             int random = rand.nextInt(WEIGHTED_NUMBER_ARRAY.size() - 1);
             Integer randomNumber = WEIGHTED_NUMBER_ARRAY.get(random);
 
-            int randomChar = rand.nextInt(26) + 'a';
             char randomletter = (char) rand.nextInt(WEIGHTED_CHARACTER_ARRAY.size() - 1);
 
             randomPairs[0][i] = randomNumber;
@@ -83,10 +82,12 @@ public class TechTestQA {
         int letterStreakMax = 0;
         int numberStreakMax = 0;
 
+        // Loop through random character pairs and keep score
         for (int i = 0; i < randomPairs[0].length; i++) {
             int charValue = randomPairs[1][i];
 
             if (charValue >= randomPairs[0][i]) {
+                // Found a letter, add to total wins and keep track of letter wins streak
                 lettersWins++;
                 letterStreak++;
                 numberStreak = 0;
@@ -94,6 +95,7 @@ public class TechTestQA {
                     letterStreakMax = letterStreak;
                 }
             } else {
+                // Did not find a letter, so add to numbers total wins and keep track of number wins streak
                 numberWins++;
                 numberStreak++;
                 letterStreak = 0;
@@ -103,10 +105,11 @@ public class TechTestQA {
             }
         }
 
-        System.out.println(String.format("Letter Wins: %d", lettersWins));
-        System.out.println(String.format("Letter Streak: %d", letterStreakMax));
-        System.out.println(String.format("Number Wins: %d", numberWins));
-        System.out.println(String.format("Number Streak: %d", numberStreakMax));
+        // Output as JSON
+        System.out.println(String.format("{"));
+        System.out.println(String.format("    \"letters\": {\"wins\": " + lettersWins + " \"streak\": " + letterStreakMax + ","));
+        System.out.println(String.format("    \"numbers\": {\"wins\": " + numberWins + " \"streak\": " + numberStreakMax));
+        System.out.println(String.format("}"));
     }
 
     private static ArrayList createArrayOfNumbers(int primeOdds) {

@@ -59,6 +59,7 @@ public class TechTestQA {
         final ArrayList<Character> WEIGHTED_CHARACTER_ARRAY = createArrayOfLetters(vowelsOdds);
 
         // Array to hold results of picks
+        // There is probably a much more better of selecting from weighted odds, but this works
         Integer[][] randomPairs = new Integer[2][challenges];
 
         // Loop through "challenges" (X) - choosing from weighted ArrayLists
@@ -96,6 +97,7 @@ public class TechTestQA {
                 }
             } else {
                 // Did not find a letter, so add to numbers total wins and keep track of number wins streak
+                // must be a number: "A roman walks into a bar and holds up two fingers.  I'll have five he says."
                 numberWins++;
                 numberStreak++;
                 letterStreak = 0;

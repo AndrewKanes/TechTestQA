@@ -1,6 +1,9 @@
 /**
  * enum of vowels. Reference:
  * http://stackoverflow.com/questions/20203378/constant-expression-required-when-using-an-array-with-a-switch-statement
+ *
+ * Q: Is there a word in the English language that uses all the vowels including "y" ?
+ * A: Unquestionablely!
  */
 public enum Vowels {
     A, E, I, O, U;

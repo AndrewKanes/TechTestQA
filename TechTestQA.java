@@ -35,8 +35,6 @@ public class TechTestQA {
     private final static ArrayList<Integer> PRIME_NUMBERS = findPrimes(); // Prime numbers should be Y times more likely than other numbers
     private final static ArrayList<Integer> PERFECT_SQUARES = findPerfectSquares(); // Perfects squares should be one third (1/3)x as likely as prime numbers
 
-    private enum vowels {a, e, i, o, u}
-
     /**
      * main method which mostly calls helper methods for logic
      * <p>
@@ -167,7 +165,6 @@ public class TechTestQA {
         System.out.println();
         return perfectSquares;
     }
-
 
     /**
      * Finds prime numbers less the maxNumber

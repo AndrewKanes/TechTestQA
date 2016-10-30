@@ -1,57 +1,46 @@
-import javax.xml.stream.events.Characters;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 /**
  * Generates X random character pairs
- and analyzes them using the following rules:
-
- 1. Each pair should be one number (1-99) and one letter (a-z)
-
- 2. Prime numbers should be Y times more likely than other numbers
-
- 3. Perfects squares should be one third (1/3)x as likely as prime numbers
-
- 4. Vowels (a, e, i, o, u) should be Z times more likely than consonants
-
- 5. The letter "y" should be twice (2x) as likely as vowels
-
- 6. Each letter must be translated to a number based on the its numerical
- position in the alphabet.
- ex: 'f' is the 6th letter of the alphabet, so it would be evaluated as 6.
-
- 7. This program should return valid JSON that has the following structure:
-
- {
- "letters": {"wins": 4000, "streak": 17},
- "numbers": {"wins": 6000, "streak": 6}
- }
-
-
- 8. Each number/letter value pair should be evaluated. If the letter value is lower,
- incrememnt the "wins" field on the "letters" object. If the number value is lower,
- increment the "wins" field on the "numbers" object.
-
- 9. Keep track of the longest running "streak" for letters and numbers
-
- ex: if "letters" is lower 5 times in a row, the letters streak would be 5
-
- 10. This program should be able to take 3 inputs:
- a. the number of "challenges" (X)
- b. the likelihood of prime numbers (Y)
- c. the likelihood of vowels (Z)
+ * and analyzes them using the following rules:
+ *
+ * 1. Each pair should be one number (1-99) and one letter (a-z)
+ * 2. Prime numbers should be Y times more likely than other numbers
+ * 3. Perfects squares should be one third (1/3)x as likely as prime numbers
+ * 4. Vowels (a, e, i, o, u) should be Z times more likely than consonants
+ * 5. The letter "y" should be twice (2x) as likely as vowels
+ * 6. Each letter must be translated to a number based on the its numerical
+ * position in the alphabet.
+ * ex: 'f' is the 6th letter of the alphabet, so it would be evaluated as 6.
+ * 7. This program should return valid JSON that has the following structure:
+ * {
+ * "letters": {"wins": 4000, "streak": 17},
+ * "numbers": {"wins": 6000, "streak": 6}
+ * }
+ * 8. Each number/letter value pair should be evaluated. If the letter value is lower,
+ * incrememnt the "wins" field on the "letters" object. If the number value is lower,
+ * increment the "wins" field on the "numbers" object.
+ * 9. Keep track of the longest running "streak" for letters and numbers
+ * ex: if "letters" is lower 5 times in a row, the letters streak would be 5
+ * 10. This program should be able to take 3 inputs:
+ * a. the number of "challenges" (X)
+ * b. the likelihood of prime numbers (Y)
+ * c. the likelihood of vowels (Z)
  */
 
 public class TechTestQA {
     private final static int MAX_NUMBER = 99;       // Each pair should be one number (1-99)
     private final static ArrayList<Integer> PRIME_NUMBERS = findPrimes(); // Prime numbers should be Y times more likely than other numbers
     private final static ArrayList<Integer> PERFECT_SQUARES = findPerfectSquares(); // Perfects squares should be one third (1/3)x as likely as prime numbers
-    private final static ArrayList<Character> VOWELS = vowels(); // Vowels (a, e, i, o, u) should be Z times more likely than consonants
 
-    /** main method which mostly calls helper methods for logic
-     *
-     *
+    private enum vowels {a, e, i, o, u}
+
+    /**
+     * main method which mostly calls helper methods for logic
+     * <p>
+     * <p>
      * Q: "Whats the object-oriented way to become wealthy?"
      * A: Inheritance
      */
@@ -69,7 +58,7 @@ public class TechTestQA {
 
         // Create ArrayLists from which to select character pairs
         final ArrayList<Integer> WEIGHTED_NUMBER_ARRAY = createArrayOfNumbers(primeOdds);
-        final ArrayList<Character>  WEIGHTED_CHARACTER_ARRAY =  createArrayOfLetters(vowelsOdds);
+        final ArrayList<Character> WEIGHTED_CHARACTER_ARRAY = createArrayOfLetters(vowelsOdds);
 
         // Array to hold results of picks
         Integer[][] randomPairs = new Integer[2][challenges];
@@ -85,7 +74,7 @@ public class TechTestQA {
             char randomletter = (char) rand.nextInt(WEIGHTED_CHARACTER_ARRAY.size() - 1);
 
             randomPairs[0][i] = randomNumber;
-            randomPairs[1][i] =  Integer.valueOf(randomletter);
+            randomPairs[1][i] = Integer.valueOf(randomletter);
         }
 
         // initialize variables which will contain random character pairs
@@ -97,7 +86,7 @@ public class TechTestQA {
         int numberStreakMax = 0;
 
         for (int i = 0; i < randomPairs[0].length; i++) {
-            int charValue = randomPairs[1][i]; // (int) (randomPairs[1][i]).charAt(0) - 96;
+            int charValue = randomPairs[1][i];
 
             if (charValue >= randomPairs[0][i]) {
                 lettersWins++;
@@ -139,7 +128,8 @@ public class TechTestQA {
             }
         }
         return numbersWithOdds;
-        // If you put a million monkeys at a million keyboards, one of them will eventually write a Java program.
+        // If you put a million monkeys at a million keyboards,
+        // one of them will eventually write a Java program.
         // The rest of them will write Perl programs.
     }
 
@@ -148,16 +138,16 @@ public class TechTestQA {
 
         for (Character letter = 'a'; letter <= 'z'; letter++) {
             letterWithOdds.add(letter);
-            if (VOWELS.contains(letter)) {
-                for (int x = 0; x < vowelOdds ; x++) {
+            if (Vowels.isVowel(letter)) {
+                for (int x = 0; x < vowelOdds; x++) {
                     letterWithOdds.add(letter);
                 }
             }
-            if (letter=='y') {
-                letterWithOdds.add(letter);
-                letterWithOdds.add(letter);
+            if (letter == 'y') {
+                for (int x = 0; x < vowelOdds * 2; x++) {
+                    letterWithOdds.add(letter);
+                }
             }
-
         }
         return letterWithOdds;
     }
@@ -206,17 +196,5 @@ public class TechTestQA {
         }
         System.out.println();
         return primeNumbers;
-    }
-
-
-
-    private static ArrayList vowels( ) {
-        ArrayList<Character> vowels = new ArrayList<>();
-        vowels.add('a');
-        vowels.add('e');
-        vowels.add('i');
-        vowels.add('o');
-        vowels.add('u');
-        return vowels;
     }
 }

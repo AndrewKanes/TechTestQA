@@ -3,12 +3,58 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * Generates X random character pairs
+ and analyzes them using the following rules:
+
+ 1. Each pair should be one number (1-99) and one letter (a-z)
+
+ 2. Prime numbers should be Y times more likely than other numbers
+
+ 3. Perfects squares should be one third (1/3)x as likely as prime numbers
+
+ 4. Vowels (a, e, i, o, u) should be Z times more likely than consonants
+
+ 5. The letter "y" should be twice (2x) as likely as vowels
+
+ 6. Each letter must be translated to a number based on the its numerical
+ position in the alphabet.
+ ex: 'f' is the 6th letter of the alphabet, so it would be evaluated as 6.
+
+ 7. This program should return valid JSON that has the following structure:
+
+ {
+ "letters": {"wins": 4000, "streak": 17},
+ "numbers": {"wins": 6000, "streak": 6}
+ }
+
+
+ 8. Each number/letter value pair should be evaluated. If the letter value is lower,
+ incrememnt the "wins" field on the "letters" object. If the number value is lower,
+ increment the "wins" field on the "numbers" object.
+
+ 9. Keep track of the longest running "streak" for letters and numbers
+
+ ex: if "letters" is lower 5 times in a row, the letters streak would be 5
+
+ 10. This program should be able to take 3 inputs:
+ a. the number of "challenges" (X)
+ b. the likelihood of prime numbers (Y)
+ c. the likelihood of vowels (Z)
+ */
+
 public class TechTestQA {
     private final static int MAX_NUMBER = 99;       // Each pair should be one number (1-99)
     private final static ArrayList<Integer> PRIME_NUMBERS = findPrimes(); // Prime numbers should be Y times more likely than other numbers
     private final static ArrayList<Integer> PERFECT_SQUARES = findPerfectSquares(); // Perfects squares should be one third (1/3)x as likely as prime numbers
     private final static ArrayList<Character> VOWELS = vowels(); // Vowels (a, e, i, o, u) should be Z times more likely than consonants
 
+    /** main method which mostly calls helper methods for logic
+     *
+     *
+     * Q: "Whats the object-oriented way to become wealthy?"
+     * A: Inheritance
+     */
     public static void main(String[] args) {
         // Prompts for user to enter parameters
         Scanner scanner = new Scanner(System.in);
@@ -31,7 +77,7 @@ public class TechTestQA {
         // Loop through "challenges" (X) - choosing from weighted ArrayLists
         for (int i = 0; i < challenges; i++) {
             Random rand = new Random();
-            
+            // When your hammer is C++, everything begins to look like a thumb.
             int random = rand.nextInt(WEIGHTED_NUMBER_ARRAY.size() - 1);
             Integer randomNumber = WEIGHTED_NUMBER_ARRAY.get(random);
 
@@ -42,6 +88,7 @@ public class TechTestQA {
             randomPairs[1][i] =  Integer.valueOf(randomletter);
         }
 
+        // initialize variables which will contain random character pairs
         int lettersWins = 0;
         int numberWins = 0;
         int letterStreak = 0;
@@ -92,6 +139,8 @@ public class TechTestQA {
             }
         }
         return numbersWithOdds;
+        // If you put a million monkeys at a million keyboards, one of them will eventually write a Java program.
+        // The rest of them will write Perl programs.
     }
 
     private static ArrayList createArrayOfLetters(int vowelOdds) {
@@ -158,6 +207,8 @@ public class TechTestQA {
         System.out.println();
         return primeNumbers;
     }
+
+
 
     private static ArrayList vowels( ) {
         ArrayList<Character> vowels = new ArrayList<>();
